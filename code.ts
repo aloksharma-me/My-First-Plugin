@@ -9,33 +9,28 @@ figma.ui.onmessage = pluginMessage =>{
 
     // find the component set first, and then the default variable of that set
     const postComponentSet = figma.root.findOne(node => node.type === "COMPONENT_SET" && node.name=="post") as ComponentSetNode;
-    const defaultVariant = postComponentSet.defaultVariant as ComponentNode;
-    
-    // find a specific component
-    // where (figma.root), what (findOne, node), how (node.type && node.name)
-    const darkVariant = figma.root.findOne(node => node.type == "COMPONENT" && node.name=="Image=none, Dark mode=true") as ComponentNode;
 
     let selectedVariant;
 
     if(pluginMessage.theme === 'dark'){
         switch(pluginMessage.Image){
             case "single-image":
-                darkVariant.createInstance();
+                selectedVariant = figma.root.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true") as ComponentNode;
                 break;
             case "carousel":
-                darkVariant.createInstance();
+                selectedVariant = figma.root.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true") as ComponentNode;
                 break;
             default:
-
+                selectedVariant = figma.root.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true") as ComponentNode;
                 break;
         };
     } else {
         switch(pluginMessage.Image){
             case "single-image":
-                defaultVariant.createInstance();
+                selectedVariant = figma.root.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false") as ComponentNode;
                 break;
             case "carousel":
-                defaultVariant.createInstance();
+                selectedVariant = figma.root.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false") as ComponentNode;
                 break;
             default:
                 selectedVariant = postComponentSet.defaultVariant as ComponentNode;
@@ -44,6 +39,8 @@ figma.ui.onmessage = pluginMessage =>{
             };
         
     }
+
+    selectedVariant.createInstance();
 
     // figma.closePlugin();
 }
