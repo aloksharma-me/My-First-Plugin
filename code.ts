@@ -23,7 +23,7 @@ figma.ui.onmessage = pluginMessage =>{
                 darkVariant.createInstance();
                 break;
             case "carousel":
-
+                darkVariant.createInstance();
                 break;
             default:
 
@@ -32,13 +32,13 @@ figma.ui.onmessage = pluginMessage =>{
     } else {
         switch(pluginMessage.Image){
             case "single-image":
-                darkVariant.createInstance();
+                defaultVariant.createInstance();
                 break;
             case "carousel":
-
+                defaultVariant.createInstance();
                 break;
             default:
-
+                selectedVariant = postComponentSet.defaultVariant as ComponentNode;
                 break;
         
             };
