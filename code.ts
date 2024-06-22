@@ -1,7 +1,10 @@
 figma.showUI(__html__);
 figma.ui.resize(300, 500);
 
-figma.ui.onmessage = pluginMessage =>{
+figma.ui.onmessage = async(pluginMessage) =>{
+
+    await figma.loadFontAsync ({family:"Inter", style:"Regular"});
+
     
     // findOne searches for a node across the entire document (figma.root) with the node.type and node.name
 
@@ -40,7 +43,15 @@ figma.ui.onmessage = pluginMessage =>{
         
     }
 
-    selectedVariant.createInstance();
+    const newPost = selectedVariant.createInstance();
+
+    const templateName = newPost.findOne(node => node.type == "TEXT" && node.name == "displayName") as TextNode;
+    const templateUsername = newPost.findOne(node => node.type == "TEXT" && node.name == "@username") as TextNode;
+    const templateDescription = newPost.findOne(node => node.type == "TEXT" && node.name == "description") as TextNode;
+
+    templateName.characters = pluginMessage.name;
+    templateUsername.characters = pluginMessage.username;
+    templateDescription.characters = pluginMessage.body;
 
     // figma.closePlugin();
 }
